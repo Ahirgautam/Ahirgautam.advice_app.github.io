@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&family=Manrope:wght@200..800&display=swap"
+rel="stylesheet">
+
+  <title>Frontend Mentor | Advice generator app</title>
+
+
+  <style>
+        *{
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        :root{
+          --Light_Cyan: hsl(193, 38%, 86%);
+          --Neon_Green: hsl(150, 100%, 66%);
+          
+          --Grayish_Blue: hsl(217, 19%, 38%);
+          --Dark_Grayish_Blue: hsl(217, 19%, 24%);
+          --Dark_Blue: hsl(218, 23%, 16%);
+          --gap:20px;
+          font-size: 28px;
+        }
+        body{
+          background-color: var(--Dark_Blue);
+          min-height:  100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: 'Manrope' , Sans-Serif;
+          font-weight: 800;
+        }
+        .card{
+          background-color: var(--Dark_Grayish_Blue);
+          width: min(700px , 90vw);
+          min-width: 300px;
+          height: fit-content;
+          padding: var(--gap);
+          
+          
+          border-radius: 10px;
+          position: relative;
+          display: flex;
+          
+          align-items: center;
+          flex-direction: column;
+          
+        }
+        .card .advice{
+          color: var(--Neon_Green);
+          font-size: .5rem;
+          letter-spacing: .1rem;
+          margin-bottom: var(--gap);
+          text-align: center;
+        }
+        .advice_text{
+          color: var(--Light_Cyan);
+          text-align: center;
+          margin-bottom: var(--gap);
+        }
+        .get_advice{
+          position: absolute;
+          bottom: 0;
+          transform: translateY(50%);
+          height: 70px;
+          aspect-ratio: 1/1;
+          border-radius: 50%;
+          border:none;
+          background-color: var(--Neon_Green);
+          background-image: url('images/icon-dice.svg');
+          background-repeat: no-repeat;
+          background-position: center center;
+          cursor: pointer;
+        }
+        .get_advice:hover{
+          box-shadow: 0px 0px 10px var(--Neon_Green) , 
+                      0px 0px 40px var(--Neon_Green); 
+        }
+        .card .img{
+          display: block;
+          
+          height: 80px;
+          
+        }
+        @media  only  screen and (min-width:800px){
+          :root{
+            font-size:38px;
+            --gap:40px;
+          }
+          .card .img{
+            height: 120px;
+          }
+          .get_advice{
+            background-size: 40%;
+            height: 120px;
+          }
+        }
+        
+        .hidden{
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          border: 0;
+          
+        }
+  </style>
+</head>
+<body>
+   <h1 class="hidden">advice generator app click on button to generate new advice</h1>
+    <main>
+      <div class="card" role="region">
+           <div class="advice">
+               <span>ADVICE </span>
+               <span class="advice_id"> #117</span>
+           </div>
+           <p class="advice_text">
+             “It is easy to sit up and take notice, what's difficult is getting
+             up and taking action.”
+           </p>
+           
+           <picture class="img">
+                <source srcset="images/pattern-divider-desktop.svg" media="(min-width:700px)"/>
+                <img src="images/pattern-divider-mobile.svg" alt="divider">
+           </picture>
+           
+           <button class="get_advice" onclick="changeAdvice()">
+              
+           </button>
+      </div>
+    </main>
+    
+    <script>
+        
+        const text = document.getElementsByClassName("advice_text")[0];
+        const id = document.getElementsByClassName("advice_id")[0];
+        
+        function api(){
+           return  fetch('https://api.adviceslip.com/advice')
+          .then((data) => data.json())
+          .then((data) => data)
+          
+        }
+        
+        
+        function changeAdvice(){
+          
+          let obj ;
+          api().then((data) => {
+            id.innerText =  "#"+  data.slip.id;
+            text.innerText = " \“"+ data.slip.advice + "\”";
+          });
+         
+        }
+    </script>
+</body>
+</html>
